@@ -44,7 +44,7 @@ def targetpositions_visualization(waypoint, frame, num, scale, color):
 
 def talker():
     rospy.init_node('talker', anonymous=True)
-    rate = rospy.Rate(10) 
+    rate = rospy.Rate(10000) 
 
     file_name="/home/zy/catkin_ws/src/paintingrobot_related/paintingrobot_underusing/paintingrobot_description/urdf/base/paintingrobot_description_witharm.urdf"
     marker_pub = rospy.Publisher("visualization_marker", Marker, queue_size=10)
@@ -54,22 +54,24 @@ def talker():
 
     while not rospy.is_shutdown():
         robot = URDF.from_xml_file(file_name)
-        kdl_kin = KDLKinematics(robot,"base_link", "wrist3_Link")
+        kdl_kin = KDLKinematics(robot,"base_link", "tool0")
         tree = kdl_tree_from_urdf_model(robot)
-        chain = tree.getChain("base_link", "wrist3_Link")
+        chain = tree.getChain("base_link", "tool0")
 
         q[0]=0.0
         q[1]=0.0
         q[2]=0.0
-        q[3]=0.0
-        q[4]=0.0
-        q[5]=-175/180.0*math.pi+2*175/180.0*math.pi*random.random()
+
+        q[3]=-0.1+1.1*random.random()
+        q[4]=-0.5+(0.5+3/4.0*math.pi)*random.random()  
+
+        q[5]=-1/6*math.pi+(1/6+175/180.0)*math.pi*random.random()
         q[6]=-175/180.0*math.pi+2*175/180.0*math.pi*random.random()
-        q[7]=-175/180.0*math.pi+2*175/180.0*math.pi*random.random()
         q[7]=-175/180.0*math.pi+2*175/180.0*math.pi*random.random()
         q[8]=-175/180.0*math.pi+2*175/180.0*math.pi*random.random()
         q[9]=-175/180.0*math.pi+2*175/180.0*math.pi*random.random()
         q[10]=-175/180.0*math.pi+2*175/180.0*math.pi*random.random()
+
         # print("the joints are:",q)
         # print("the random number is:",175/180.0*math.pi*random.random())
 
@@ -79,7 +81,7 @@ def talker():
         frame = 'base_link'
         mobileplatform_targepositions=np.array([pose[0,3], pose[1,3], pose[2,3],1.0,0.0,0.0,0.0])
         scale1=np.array([0.05,0.05,0.05])
-        color1=np.array([1.0,0.0,0.0])
+        color1=np.array([0.0,1.0,0.0])
         marker1,visualization_num=targetpositions_visualization(mobileplatform_targepositions, frame, visualization_num, scale1, color1)
         marker_pub.publish(marker1)
         visualization_num=visualization_num+1
