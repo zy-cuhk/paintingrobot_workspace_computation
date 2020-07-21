@@ -67,7 +67,7 @@ def talker():
         if visualization_num>=N:
             break
         # rate.sleep()
-    scio.savemat('/home/zy/catkin_ws/src/paintingrobot_related/paintingrobot_underusing/paintingrobot_workspace_computation/scripts/data2.mat',{'workspace_points':workspace_points})
+    scio.savemat('/home/zy/catkin_ws/src/paintingrobot_related/paintingrobot_underusing/paintingrobot_workspace_computation/scripts/data3.mat',{'workspace_points':workspace_points})
 
 
 if __name__ == '__main__':
